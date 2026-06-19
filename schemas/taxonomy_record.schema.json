@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "taxonomy_record.schema.json",
+  "title": "Taxonomy Record",
+  "description": "Registro de compra (material/servicio) clasificado por el harness. Conserva siempre la descripcion original y separa dimensiones: cuenta != proveedor != material != categoria != equipo.",
+  "type": "object",
+  "required": [
+    "id_registro",
+    "fuente",
+    "descripcion_original",
+    "estado_clasificacion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id_registro": { "type": "string", "description": "Identificador unico e inmutable del registro." },
+    "fuente": { "type": "string", "description": "Origen del dato (ej. SAP_OC, SAP_HES, maestro_materiales)." },
+    "sociedad": { "type": "string" },
+    "centro": { "type": "string" },
+    "planta": { "type": "string" },
+    "embarcacion": { "type": "string" },
+    "unidad_negocio": {
+      "type": "string",
+      "enum": ["flota_sin_frio", "flota_con_frio", "harina_aceite", "congelado", "corporativo", "transversal", "no_determinado"],
+      "description": "Unidad de negocio operativa; no confundir con transversalidad de la categoria."
+    },
+    "fecha": { "type": "string", "description": "Fecha del documento (YYYY-MM-DD)." },
+    "proveedor": { "type": "string" },
+    "codigo_proveedor": { "type": "string" },
+    "codigo_material_servicio": { "type": "string" },
+    "descripcion_original": { "type": "string", "description": "Descripcion tal cual viene de la fuente. NUNCA se sobrescribe." },
+    "descripcion_normalizada": { "type": "string", "description": "Descripcion limpia/normalizada (inferencia del harness)." },
+    "texto_largo": { "type": "string" },
+    "cuenta_contable": { "type": "string", "description": "Solo referencia/mapping. PROHIBIDO usar como categoria." },
+    "grupo_articulo_sap": { "type": "string" },
+    "orden_compra": { "type": "string" },
+    "posicion_oc": { "type": "string" },
+    "solped": { "type": "string" },
+    "hes": { "type": "string" },
+    "contrato": { "type": "string" },
+    "monto": { "type": "number" },
+    "moneda": { "type": "string", "description": "ISO 4217 (PEN, USD, etc.)." },
+    "cantidad": { "type": "number" },
+    "unidad_medida": { "type": "string" },
+    "tipo_compra": {
+      "type": "string",
+      "enum": ["material", "servicio", "mixto", "no_determinado"]
+    },
+    "macro_categoria": { "type": "string" },
+    "categoria": { "type": "string" },
+    "subcategoria": { "type": "string" },
+    "familia": { "type": "string" },
+    "atributos_extraidos": {
+      "type": "object",
+      "description": "Pares atributo:valor extraidos de la descripcion segun el modelo de atributos de la categoria.",
+      "additionalProperties": true
+    },
+    "equipo_relacionado": { "type": "string", "description": "Solo mapping a taxonomia de equipos (ISO 14224/SAP PM). No es categoria." },
+    "functional_location": { "type": "string" },
+    "transversalidad": {
+      "type": "string",
+      "enum": ["transversal_total", "transversal_parcial", "especifica_flota", "especifica_flota_con_frio", "especifica_flota_sin_frio", "especifica_harina_aceite", "especifica_congelado", "corporativa", "no_determinado"]
+    },
+    "kraljic_valor": { "type": "string", "enum": ["alto", "medio", "bajo", "no_determinado"] },
+    "kraljic_riesgo": { "type": "string", "enum": ["alto", "medio", "bajo", "no_determinado"] },
+    "criticidad": { "type": "string", "enum": ["critica", "alta", "media", "baja", "no_determinado"] },
+    "tarifable": { "type": "boolean" },
+    "contrato_marco_candidato": { "type": "boolean" },
+    "catalogable": { "type": "boolean" },
+    "owner_sugerido": { "type": "string" },
+    "unspsc_sugerido": { "type": "string", "description": "Mapping externo de referencia, nunca taxonomia base." },
+    "eclass_sugerido": { "type": "string", "description": "Referencia de atributos tecnicos, nunca taxonomia base." },
+    "score_confianza": { "type": "number", "minimum": 0, "maximum": 1, "description": "Confianza de la clasificacion. NUNCA es validacion unica." },
+    "requiere_revision_humana": { "type": "boolean" },
+    "motivo_revision": { "type": "string" },
+    "estado_clasificacion": {
+      "type": "string",
+      "enum": ["sin_clasificar", "auto_propuesto", "en_revision_humana", "validado", "ambiguo", "no_clasificable"]
+    }
+  }
+}

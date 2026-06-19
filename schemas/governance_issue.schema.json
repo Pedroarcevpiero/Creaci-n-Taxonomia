@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "governance_issue.schema.json",
+  "title": "Governance Issue",
+  "description": "Hallazgo de gobernanza/calidad detectado por el auditor o el revisor adversarial sobre la taxonomia (no MECE, sin owner, sin atributos, ambiguedad, etc.).",
+  "type": "object",
+  "required": ["issue_id", "tipo_issue", "node_id_afectado", "severidad", "descripcion", "estado"],
+  "additionalProperties": false,
+  "properties": {
+    "issue_id": { "type": "string" },
+    "tipo_issue": {
+      "type": "string",
+      "enum": [
+        "no_mece_solapamiento",
+        "no_mece_hueco",
+        "sin_owner",
+        "sin_atributos_minimos",
+        "ambiguedad_alta",
+        "duplicidad_proveedor",
+        "duplicidad_material",
+        "uso_cuenta_como_categoria",
+        "uso_proveedor_como_categoria",
+        "mezcla_taxonomia_equipos",
+        "transversalidad_mal_clasificada",
+        "kraljic_inconsistente",
+        "estabilidad_version",
+        "otro"
+      ]
+    },
+    "node_id_afectado": { "type": "array", "items": { "type": "string" } },
+    "severidad": { "type": "string", "enum": ["critica", "alta", "media", "baja"] },
+    "descripcion": { "type": "string" },
+    "evidencia": { "type": "string" },
+    "recomendacion": { "type": "string" },
+    "detectado_por": { "type": "string", "description": "Agente que detecto el issue." },
+    "fecha_deteccion": { "type": "string" },
+    "version_taxonomia": { "type": "string" },
+    "estado": { "type": "string", "enum": ["abierto", "en_revision_humana", "resuelto", "aceptado_como_riesgo"] }
+  }
+}

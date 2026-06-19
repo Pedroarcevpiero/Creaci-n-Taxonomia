@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "taxonomy_node.schema.json",
+  "title": "Taxonomy Node",
+  "description": "Nodo del arbol de taxonomia propia de Exalmar (3-4 niveles principales + nivel opcional).",
+  "type": "object",
+  "required": ["node_id", "nivel", "nombre", "estado"],
+  "additionalProperties": false,
+  "properties": {
+    "node_id": { "type": "string", "description": "Codigo unico jerarquico (ej. 02.03.01)." },
+    "nivel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4,
+      "description": "0 macro_categoria, 1 categoria, 2 subcategoria, 3 familia, 4 item/atributo opcional."
+    },
+    "nivel_nombre": {
+      "type": "string",
+      "enum": ["macro_categoria", "categoria", "subcategoria", "familia", "item"]
+    },
+    "nombre": { "type": "string" },
+    "parent_id": { "type": ["string", "null"], "description": "node_id del padre; null si es macro categoria raiz." },
+    "definicion": { "type": "string", "description": "Definicion operativa que delimita que entra y que NO entra (MECE)." },
+    "incluye": { "type": "array", "items": { "type": "string" }, "description": "Ejemplos de lo que SI pertenece." },
+    "excluye": { "type": "array", "items": { "type": "string" }, "description": "Ejemplos de lo que NO pertenece (y a donde va)." },
+    "driver": { "type": "string", "description": "Driver que justifica la existencia del nodo (mercado proveedor, criticidad, etc.)." },
+    "transversalidad": {
+      "type": "string",
+      "enum": ["transversal_total", "transversal_parcial", "especifica_flota", "especifica_flota_con_frio", "especifica_flota_sin_frio", "especifica_harina_aceite", "especifica_congelado", "corporativa", "no_determinado"]
+    },
+    "owner_sugerido": { "type": "string" },
+    "atributos_obligatorios": { "type": "array", "items": { "type": "string" } },
+    "unspsc_ref": { "type": "array", "items": { "type": "string" } },
+    "eclass_ref": { "type": "array", "items": { "type": "string" } },
+    "estado": {
+      "type": "string",
+      "enum": ["propuesto", "en_revision", "aprobado", "deprecado", "fusionado", "dividido"]
+    },
+    "version_alta": { "type": "string", "description": "Version de taxonomia en que se creo el nodo." },
+    "version_baja": { "type": ["string", "null"], "description": "Version en que se deprecó; null si vigente." },
+    "notas": { "type": "string" }
+  }
+}

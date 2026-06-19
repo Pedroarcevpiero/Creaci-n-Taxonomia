@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "category_attribute.schema.json",
+  "title": "Category Attribute",
+  "description": "Definicion de un atributo tecnico/comercial obligatorio u opcional para una categoria. eCl@ss se usa solo como referencia de atributos.",
+  "type": "object",
+  "required": ["node_id", "atributo", "tipo_dato", "obligatorio"],
+  "additionalProperties": false,
+  "properties": {
+    "node_id": { "type": "string", "description": "Categoria/familia a la que aplica el atributo." },
+    "atributo": { "type": "string", "description": "Nombre normalizado del atributo (ej. potencia, caudal, talla)." },
+    "descripcion": { "type": "string" },
+    "tipo_dato": {
+      "type": "string",
+      "enum": ["texto", "numero", "booleano", "enum", "fecha", "unidad_medida", "referencia_equipo"]
+    },
+    "unidad": { "type": "string", "description": "Unidad esperada (kW, m3/h, bar, etc.) cuando aplica." },
+    "valores_permitidos": { "type": "array", "items": { "type": "string" }, "description": "Para tipo_dato=enum." },
+    "obligatorio": { "type": "boolean" },
+    "fuente_referencia": {
+      "type": "string",
+      "enum": ["eclass", "iso_14224", "impa", "sanipes_haccp", "interno", "otro"],
+      "description": "Origen de referencia del atributo (apoyo, no taxonomia base)."
+    },
+    "usado_para": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["negociacion", "tarifar", "especificacion", "criticidad", "mapping_equipo", "compliance", "busqueda"] }
+    },
+    "notas": { "type": "string" }
+  }
+}
