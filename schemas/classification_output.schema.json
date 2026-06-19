@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "classification_output.schema.json",
+  "title": "Classification Output",
+  "description": "Salida de una corrida de clasificacion (batch o registro a registro) producida por los subagents del consejo. Score de confianza nunca es la unica validacion.",
+  "type": "object",
+  "required": ["run_id", "fecha_corrida", "version_taxonomia", "resultados"],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": { "type": "string" },
+    "fecha_corrida": { "type": "string" },
+    "version_taxonomia": { "type": "string" },
+    "fuente_datos": { "type": "string" },
+    "total_registros": { "type": "integer" },
+    "resultados": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id_registro", "macro_categoria", "estado_clasificacion", "score_confianza", "requiere_revision_humana"],
+        "additionalProperties": false,
+        "properties": {
+          "id_registro": { "type": "string" },
+          "descripcion_original": { "type": "string" },
+          "macro_categoria": { "type": "string" },
+          "categoria": { "type": "string" },
+          "subcategoria": { "type": "string" },
+          "familia": { "type": "string" },
+          "tipo_compra": { "type": "string", "enum": ["material", "servicio", "mixto", "no_determinado"] },
+          "score_confianza": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidencia_clasificacion": { "type": "string", "description": "Por que se asigno esta categoria (texto, regla, patron)." },
+          "agentes_involucrados": { "type": "array", "items": { "type": "string" } },
+          "requiere_revision_humana": { "type": "boolean" },
+          "motivo_revision": { "type": "string" },
+          "estado_clasificacion": {
+            "type": "string",
+            "enum": ["sin_clasificar", "auto_propuesto", "en_revision_humana", "validado", "ambiguo", "no_clasificable"]
+          }
+        }
+      }
+    },
+    "metricas_resumen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "porcentaje_clasificado_macro": { "type": "number" },
+        "porcentaje_clasificado_categoria": { "type": "number" },
+        "porcentaje_clasificado_subcategoria": { "type": "number" },
+        "porcentaje_clasificado_familia": { "type": "number" },
+        "tasa_no_clasificable": { "type": "number" },
+        "tasa_ambiguedad": { "type": "number" },
+        "tasa_revision_humana": { "type": "number" }
+      }
+    }
+  }
+}

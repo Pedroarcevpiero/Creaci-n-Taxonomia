@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mapping_rule.schema.json",
+  "title": "Mapping Rule",
+  "description": "Regla que conecta dimensiones separadas (cuenta, proveedor, material, equipo, estandar externo) con un nodo de la taxonomia. Las dimensiones se mantienen separadas pero conectadas.",
+  "type": "object",
+  "required": ["rule_id", "tipo_mapping", "origen", "destino_node_id", "confianza"],
+  "additionalProperties": false,
+  "properties": {
+    "rule_id": { "type": "string" },
+    "tipo_mapping": {
+      "type": "string",
+      "enum": ["cuenta_a_categoria", "grupo_articulo_a_categoria", "material_a_categoria", "proveedor_a_categoria", "equipo_a_categoria", "unspsc", "eclass", "iso_14224", "impa", "sanipes_haccp", "palabra_clave"],
+      "description": "Tipo de mapping. NOTA: cuenta/proveedor/equipo solo se MAPEAN, nunca SON la categoria."
+    },
+    "origen": { "type": "string", "description": "Valor de origen (codigo de cuenta, codigo proveedor, patron de texto, codigo UNSPSC, etc.)." },
+    "origen_descripcion": { "type": "string" },
+    "destino_node_id": { "type": "string", "description": "Nodo de taxonomia destino." },
+    "condicion": { "type": "string", "description": "Condicion adicional opcional (ej. solo si unidad_negocio=flota)." },
+    "direccion": { "type": "string", "enum": ["entrada", "salida", "bidireccional"], "description": "entrada: ayuda a clasificar; salida: exporta a estandar externo." },
+    "confianza": { "type": "string", "enum": ["alta", "media", "baja"] },
+    "requiere_revision_humana": { "type": "boolean" },
+    "evidencia": { "type": "string" },
+    "estado": { "type": "string", "enum": ["propuesta", "aprobada", "deprecada"] }
+  }
+}

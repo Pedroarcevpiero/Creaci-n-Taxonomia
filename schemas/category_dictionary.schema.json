@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "category_dictionary.schema.json",
+  "title": "Category Dictionary Entry",
+  "description": "Entrada del diccionario de categorias: define, delimita y gobierna cada categoria/familia.",
+  "type": "object",
+  "required": ["node_id", "nombre", "definicion", "incluye", "excluye"],
+  "additionalProperties": false,
+  "properties": {
+    "node_id": { "type": "string" },
+    "nombre": { "type": "string" },
+    "nivel_nombre": {
+      "type": "string",
+      "enum": ["macro_categoria", "categoria", "subcategoria", "familia", "item"]
+    },
+    "definicion": { "type": "string" },
+    "incluye": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "excluye": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Que NO entra y a que nodo va; clave para mantener MECE." },
+    "sinonimos": { "type": "array", "items": { "type": "string" }, "description": "Terminos/abreviaturas que mapean a esta categoria." },
+    "palabras_clave": { "type": "array", "items": { "type": "string" } },
+    "reglas_clasificacion": { "type": "array", "items": { "type": "string" }, "description": "Reglas que un clasificador debe seguir para asignar registros aqui." },
+    "atributos_obligatorios": { "type": "array", "items": { "type": "string" } },
+    "transversalidad": {
+      "type": "string",
+      "enum": ["transversal_total", "transversal_parcial", "especifica_flota", "especifica_flota_con_frio", "especifica_flota_sin_frio", "especifica_harina_aceite", "especifica_congelado", "corporativa", "no_determinado"]
+    },
+    "owner_sugerido": { "type": "string" },
+    "criticidad_tipica": { "type": "string", "enum": ["critica", "alta", "media", "baja", "no_determinado"] },
+    "ejemplos_descripciones": { "type": "array", "items": { "type": "string" } },
+    "estado": { "type": "string", "enum": ["propuesto", "en_revision", "aprobado", "deprecado"] }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "taxonomy_version.schema.json",
+  "title": "Taxonomy Version",
+  "description": "Entrada del log de versionado de la taxonomia. Permite trazabilidad de cambios y rollback.",
+  "type": "object",
+  "required": ["version", "fecha", "estado", "cambios"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "string", "description": "Semver simple (ej. v0.0, v0.1, v1.0)." },
+    "fecha": { "type": "string" },
+    "autor_o_proceso": { "type": "string" },
+    "estado": { "type": "string", "enum": ["borrador", "en_revision", "publicada", "deprecada", "rollback"] },
+    "version_anterior": { "type": ["string", "null"] },
+    "cambios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tipo_cambio", "node_id", "descripcion"],
+        "additionalProperties": false,
+        "properties": {
+          "tipo_cambio": {
+            "type": "string",
+            "enum": ["alta", "baja", "fusion", "division", "renombre", "reclasificacion_masiva", "cambio_atributos", "cambio_owner"]
+          },
+          "node_id": { "type": "string" },
+          "node_id_relacionado": { "type": "array", "items": { "type": "string" }, "description": "Para fusion/division: nodos origen/destino." },
+          "descripcion": { "type": "string" },
+          "justificacion": { "type": "string" },
+          "aprobado_por": { "type": "string" }
+        }
+      }
+    },
+    "metricas_estabilidad": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "porcentaje_registros_reclasificados": { "type": "number" },
+        "nodos_creados": { "type": "integer" },
+        "nodos_deprecados": { "type": "integer" }
+      }
+    },
+    "rollback_de": { "type": ["string", "null"], "description": "Si esta version es un rollback, version a la que regresa." }
+  }
+}
